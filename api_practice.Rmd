@@ -82,9 +82,11 @@ download_d1_data(data_obj, path)
 
 Read the metadata
 ```{r}
-read_d1_files("~/github/eds214_api_practice2/doi_10.5063_F1CJ8BPH_household_language_csv")
+household_lang <- read_d1_files("~/R/eds214_api_practice/doi_10.5063_F1CJ8BPH__household_language__csv/")
 
-dataframe <- data$data
+
+
+dataframe <- household_lang$data
 
 ```
 
