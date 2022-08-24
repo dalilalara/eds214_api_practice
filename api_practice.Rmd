@@ -1,0 +1,95 @@
+---
+title: "API Practice Day 3 EDS 214"
+output: html_document
+date: "2022-08-24"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Hands-on
+USGS dataRetrieval R package to retrieve hydrological data.USGS is managing a vast network of gauges to monitor freshwater across the US.
+
+Exercise 1
+Create a new repository on GitHub named api-practice
+
+Clone is to Taylor
+
+```{r}
+library(dataRetrieval)
+library(ggplot2)
+library(tidyverse)
+```
+
+# Read in data 
+Webpage: https://waterdata.usgs.gov/nwis/uv?site_no=11118500
+```{r}
+# Ventura River Site
+siteNumber <- "11118500" 
+ChoptankInfo <- readNWISsite(siteNumber)
+parameterCd <- "00060"
+
+#Raw daily data:
+rawDailyData <- readNWISdv(siteNumber,parameterCd,
+                      "2019-10-01","2020-10-05")
+```
+
+
+
+# Start a new Markdown document to plot the discharge time-series for the Ventura River from 2019-10-01 to 2020-10-05
+
+```{r}
+ggplot(data = rawDailyData, 
+       aes(x = Date,
+           y = X_00060_00003),
+       color = X_00060_00003) +
+  geom_line(color = "orange") +
+  theme_minimal() +
+  labs(title = "Ventura River 2019 - 2020",
+       x = "Date",
+       y = "Discharge")
+  
+  
+```
+
+
+Tutorial for the package can be found here: https://cran.r-project.org/web/packages/dataRetrieval/vignettes/dataRetrieval.html#daily-data
+
+Bonus
+How would you try to determine when this stream gauge record started using the API?
+
+metajam
+The metajam R package relies on the dataONE API to download data and metadata into your R Environment. It is currently supporting KNB, ADC and EDI repositories because they rely on the metadata standard EML.
+
+Short intro to the package
+
+Exercise 2
+Let’s determine what percentage of Alaskan household are speaking only English!
+
+The data: https://doi.org/10.5063/F1N58JPP
+# Download the data in 
+Download the data household_language.csv using metajam
+Read the data into R using metajam
+```{r}
+data_obj <- "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/urn%3Auuid%3A7fc6f6db-c5ea-426a-a743-1f2edafb43b8"
+path <- "~/R/eds214_api_practice"
+# download data and metadata
+library(metajam)
+download_d1_data(data_obj, path)
+```
+
+
+Read the metadata
+```{r}
+read_d1_files("~/github/eds214_api_practice2/doi_10.5063_F1CJ8BPH_household_language_csv")
+
+dataframe <- data$data
+
+```
+
+
+Write a piece of code that will compute the percentage of Alaskan household speaking only English for the year 2009 to 2015
+Create a plot to visualize this data
+Bonus
+How does it compare to French?
